@@ -3,12 +3,13 @@ defmodule GORproject.Repo.Migrations.CreateCharacters do
 
   def change do
     create table(:characters) do
-      add :name, :string
-      add :hash, :uuid
-      add :characteristics, :string
+      add :name, :string, null: false
+      add :hash, :uuid , null: false
+      add :characteristics, :string, null: false
 
       timestamps()
     end
 
+    create unique_index(:characters, [:hash])
   end
 end

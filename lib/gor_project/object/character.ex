@@ -14,7 +14,13 @@ defmodule GORproject.Object.Character do
   @doc false
   def changeset(character, attrs) do
     character
-    |> cast(attrs, [:name, :hash, :characteristics])
-    |> validate_required([:name, :hash, :characteristics])
+    |> cast(attrs, [:name, :characteristics])
+    |> validate_required([:name, :characteristics])
+    |> generate_hash()
+    |> unique_constraint(:hash)
+  end
+
+  def generate_hash(changeset) do
+    change(changeset, hash: Ecto.UUID.generate())
   end
 end
