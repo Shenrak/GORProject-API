@@ -36,13 +36,14 @@ defmodule GORprojectWeb.UserControllerTest do
   describe "index" do
     test "lists all users", %{conn: conn, current_user: current_user} do
       conn = get(conn, user_path(conn, :index))
+
       assert json_response(conn, 200)["data"] == [
-        %{
-          "email" => current_user.email,
-          "id" => current_user.id,
-          "is_active" => current_user.is_active
-        }
-      ]
+               %{
+                 "email" => current_user.email,
+                 "id" => current_user.id,
+                 "is_active" => current_user.is_active
+               }
+             ]
     end
   end
 
@@ -78,7 +79,7 @@ defmodule GORprojectWeb.UserControllerTest do
       assert json_response(conn, 200)["data"] == %{
                "id" => id,
                "email" => "some updated email",
-               "is_active" => false,
+               "is_active" => false
              }
     end
 

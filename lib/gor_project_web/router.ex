@@ -13,11 +13,12 @@ defmodule GORprojectWeb.Router do
   scope "/api", GORprojectWeb do
     pipe_through(:api)
     post("/users/sign_in", UserController, :sign_in)
+    post("/users", UserController, :create)
   end
 
   scope "/api", GORprojectWeb do
     pipe_through([:api, :api_auth])
-    resources("/users", UserController, except: [:new, :edit])
+    resources("/users", UserController, except: [:new, :edit, :create])
   end
 
   defp ensure_authenticated(conn, _opts) do

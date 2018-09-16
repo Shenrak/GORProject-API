@@ -3,10 +3,12 @@ defmodule GORprojectWeb.UserController do
 
   alias GORproject.Auth
   alias GORproject.Auth.User
+  require Logger
 
   action_fallback(GORprojectWeb.FallbackController)
 
   def sign_in(conn, %{"password" => password, "email" => email}) do
+    Logger.info "message"
     case GORproject.Auth.authenticate_user(email, password) do
       {:ok, user} ->
         conn
