@@ -1,10 +1,10 @@
 # GORproject
 
-## What's that project ?
+## What is this project ?
 
-The goal here is to provide a REST API through an elixir backend writen using the Phoenix framework to support an open-source and self-hostable RPG chat. We want to offer an alternative to people that would like to enter in the P&P RPG world but who do not feel confident about speaking with strangers or putting themselves forward.
+This project aims to provide a REST API for a RPG-oriented chat. The API will be exposed through an elixir backend writen using the Phoenix framework, and will be open-source and self-hostable. We want to offer an alternative to people that would like to get in the P&P RPG world but who do not feel confident about speaking with strangers or putting themselves forward.
 
-The game master will have features to easely handle the means of a P&P RPG (features yet to be defined). We also want to provide a global hub in which you can join a session whenever the game master is able to introduce you to the game.
+The game master will have features to easely handle the means of a P&P RPG (features yet to be fully defined). We also want to provide a global hub in which you can join a session whenever the game master is able to introduce you to the game. The list of features is still fluctuating, expect new things here!
 
 For the first version, we do not want to force users to create accounts, kind of like IRC. TODO: but will it be available?
 
