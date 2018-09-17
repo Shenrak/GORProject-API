@@ -4,7 +4,7 @@
 
 The goal here is to provide a back-end API written in elixir using the Phoenix framework to support an open-source non-lucrative RPG chat. We want to offer an alternative to people that would like to enter in the P&P RPG world but do not feel confident with the action of speaking with strangers nor putting themselves forward.
 
-We also want to provide a global hub in which you can join a session whenever the game master is able to introduce you to the game.
+The game master will have features to easely handle the means of a P&P RPG. We also want to provide a global hub in which you can join a session whenever the game master is able to introduce you to the game.
 
 For the first version, we do not want to force users to create accounts.
 
