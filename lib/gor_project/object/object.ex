@@ -45,6 +45,7 @@ defmodule GORproject.Object do
         select: c
       )
 
+    # add item management
     character = Repo.one!(query)
     stats = Poison.decode!(character.stats)
 
@@ -69,6 +70,14 @@ defmodule GORproject.Object do
 
   """
   def create_character(attrs \\ %{}) do
+    stats =
+      case attrs["stats"] do
+        "{}" -> attrs["stats"]
+        _ -> Poison.encode!(attrs["stats"])
+      end
+
+    attrs = %{attrs | "stats" => stats}
+
     %Character{}
     |> Character.changeset(attrs)
     |> Repo.insert()
