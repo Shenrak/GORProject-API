@@ -5,7 +5,7 @@ defmodule GORproject.Repo.Migrations.CreateCharacters do
     create table(:characters) do
       add :name, :string, null: false
       add :hash, :uuid , null: false
-      add :characteristics, :string, null: false
+      add :stats, :string, null: false
 
       timestamps()
     end

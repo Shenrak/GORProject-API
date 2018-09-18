@@ -4,9 +4,9 @@ defmodule GORprojectWeb.CharacterControllerTest do
   alias GORproject.Object
   alias GORproject.Object.Character
 
-  @create_attrs %{characteristics: "some characteristics", hash: "7488a646-e31f-11e4-aace-600308960662", name: "some name"}
-  @update_attrs %{characteristics: "some updated characteristics", hash: "7488a646-e31f-11e4-aace-600308960668", name: "some updated name"}
-  @invalid_attrs %{characteristics: nil, hash: nil, name: nil}
+  @create_attrs %{stats: "some stats", hash: "7488a646-e31f-11e4-aace-600308960662", name: "some name"}
+  @update_attrs %{stats: "some updated stats", hash: "7488a646-e31f-11e4-aace-600308960668", name: "some updated name"}
+  @invalid_attrs %{stats: nil, hash: nil, name: nil}
 
   def fixture(:character) do
     {:ok, character} = Object.create_character(@create_attrs)
@@ -32,7 +32,7 @@ defmodule GORprojectWeb.CharacterControllerTest do
       conn = get conn, character_path(conn, :show, id)
       assert json_response(conn, 200)["data"] == %{
         "id" => id,
-        "characteristics" => "some characteristics",
+        "stats" => "some stats",
         "hash" => "7488a646-e31f-11e4-aace-600308960662",
         "name" => "some name"}
     end
@@ -53,7 +53,7 @@ defmodule GORprojectWeb.CharacterControllerTest do
       conn = get conn, character_path(conn, :show, id)
       assert json_response(conn, 200)["data"] == %{
         "id" => id,
-        "characteristics" => "some updated characteristics",
+        "stats" => "some updated stats",
         "hash" => "7488a646-e31f-11e4-aace-600308960668",
         "name" => "some updated name"}
     end

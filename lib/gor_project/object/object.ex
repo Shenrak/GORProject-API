@@ -37,19 +37,23 @@ defmodule GORproject.Object do
   """
   def get_character!(id), do: Repo.get!(Character, id)
 
-  def add_characteristic(hash, stat) do
+  def add_stat(hash, newStat) do
     query =
-      from(c in Character,
+      from(
+        c in Character,
         where: c.hash == ^hash,
         select: c
       )
 
     character = Repo.one!(query)
-    stats = Poison.decode!(character.characteristics)
-    Map.put(stats, stat["name"], stat["value"])
-    |> Poison.encode!()
-    |> Repo.update!()
-    |> IO.inspect(label: "Poison result")
+    stats = Poison.decode!(character.stats)
+
+    str =
+      Map.put(stats, newStat["name"], newStat["value"])
+      |> Poison.encode!()
+
+    Character.changeset(character, %{stats: str})
+    |> Repo.update()
   end
 
   @doc """

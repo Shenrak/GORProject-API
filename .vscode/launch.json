@@ -10,7 +10,6 @@
       "request": "launch",
       "projectDir": "${workspaceRoot}",
       "task": "phx.server",
-      "excludeModules": ["Bcrypt.Base"]
     },
     {
       "type": "mix_task",

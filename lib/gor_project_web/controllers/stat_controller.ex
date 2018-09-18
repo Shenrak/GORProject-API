@@ -1,4 +1,4 @@
-defmodule GORprojectWeb.CharacteristicController do
+defmodule GORprojectWeb.StatController do
   use GORprojectWeb, :controller
 
   alias GORproject.Object
@@ -6,8 +6,8 @@ defmodule GORprojectWeb.CharacteristicController do
 
   action_fallback(GORprojectWeb.FallbackController)
 
-  def create(conn, %{"hash" => hash, "characteristic" => characteristic}) do
-    with {:ok, %Character{} = character} <- Object.add_characteristic(hash, characteristic) do
+  def create(conn, %{"hash" => hash, "stat" => stat}) do
+    with {:ok, %Character{} = character} <- Object.add_stat(hash, stat) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", character_path(conn, :show, character))

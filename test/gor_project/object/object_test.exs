@@ -6,9 +6,9 @@ defmodule GORproject.ObjectTest do
   describe "characters" do
     alias GORproject.Object.Character
 
-    @valid_attrs %{characteristics: "some characteristics", hash: "7488a646-e31f-11e4-aace-600308960662", name: "some name"}
-    @update_attrs %{characteristics: "some updated characteristics", hash: "7488a646-e31f-11e4-aace-600308960668", name: "some updated name"}
-    @invalid_attrs %{characteristics: nil, hash: nil, name: nil}
+    @valid_attrs %{stats: "some stats", hash: "7488a646-e31f-11e4-aace-600308960662", name: "some name"}
+    @update_attrs %{stats: "some updated stats", hash: "7488a646-e31f-11e4-aace-600308960668", name: "some updated name"}
+    @invalid_attrs %{stats: nil, hash: nil, name: nil}
 
     def character_fixture(attrs \\ %{}) do
       {:ok, character} =
@@ -31,7 +31,7 @@ defmodule GORproject.ObjectTest do
 
     test "create_character/1 with valid data creates a character" do
       assert {:ok, %Character{} = character} = Object.create_character(@valid_attrs)
-      assert character.characteristics == "some characteristics"
+      assert character.stats == "some stats"
       assert character.hash == "7488a646-e31f-11e4-aace-600308960662"
       assert character.name == "some name"
     end
@@ -44,7 +44,7 @@ defmodule GORproject.ObjectTest do
       character = character_fixture()
       assert {:ok, character} = Object.update_character(character, @update_attrs)
       assert %Character{} = character
-      assert character.characteristics == "some updated characteristics"
+      assert character.stats == "some updated stats"
       assert character.hash == "7488a646-e31f-11e4-aace-600308960668"
       assert character.name == "some updated name"
     end

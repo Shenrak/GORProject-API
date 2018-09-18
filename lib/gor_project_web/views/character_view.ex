@@ -11,9 +11,6 @@ defmodule GORprojectWeb.CharacterView do
   end
 
   def render("character.json", %{character: character}) do
-    %{id: character.id,
-      name: character.name,
-      hash: character.hash,
-      characteristics: character.characteristics}
+    %{id: character.id, name: character.name, hash: character.hash, stats: character.stats}
   end
 end
