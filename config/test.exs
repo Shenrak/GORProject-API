@@ -17,5 +17,3 @@ config :gor_project, GORproject.Repo,
   database: "gor_project_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
-
-config :bcrypt_elixir, :log_rounds, 4

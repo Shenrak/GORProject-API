@@ -3,7 +3,7 @@ defmodule GORproject.Object do
   The Object context.
   """
 
-  import Ecto.Query, warn: false
+  import Ecto.Query, only: [from: 2]
   alias GORproject.Repo
 
   alias GORproject.Object.Character
@@ -37,6 +37,31 @@ defmodule GORproject.Object do
   """
   def get_character!(id), do: Repo.get!(Character, id)
 
+  def add_stat(uuid, newStat) do
+    query =
+      from(
+        c in Character,
+        where: c.uuid == ^uuid,
+        select: c
+      )
+
+    # add item management
+    case Repo.one(query) do
+      {:ok, character} ->
+        stats = Poison.decode!(character.stats)
+
+        str =
+          Map.put(stats, newStat["name"], newStat["value"])
+          |> Poison.encode!()
+
+        Character.changeset(character, %{stats: str})
+        |> Repo.update()
+
+      nil ->
+        {:error, "No character found for the given uuid"}
+    end
+  end
+
   @doc """
   Creates a character.
 
@@ -50,6 +75,14 @@ defmodule GORproject.Object do
 
   """
   def create_character(attrs \\ %{}) do
+    stats =
+      case attrs["stats"] do
+        "{}" -> attrs["stats"]
+        _ -> Poison.encode!(attrs["stats"])
+      end
+
+    attrs = %{attrs | "stats" => stats}
+
     %Character{}
     |> Character.changeset(attrs)
     |> Repo.insert()
