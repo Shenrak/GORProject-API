@@ -37,11 +37,11 @@ defmodule GORproject.Object do
   """
   def get_character!(id), do: Repo.get!(Character, id)
 
-  def add_stat(hash, newStat) do
+  def add_stat(uuid, newStat) do
     query =
       from(
         c in Character,
-        where: c.hash == ^hash,
+        where: c.uuid == ^uuid,
         select: c
       )
 

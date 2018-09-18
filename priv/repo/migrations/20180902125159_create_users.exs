@@ -4,7 +4,7 @@ defmodule GORproject.Repo.Migrations.CreateUsers do
   def change do
     create table(:users) do
       add :email, :string, null: false
-      add :password_hash, :string
+      add :password_uuid, :string
       add :is_active, :boolean, default: false, null: false
 
       timestamps()

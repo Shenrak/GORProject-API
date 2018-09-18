@@ -6,8 +6,8 @@ defmodule GORprojectWeb.StatController do
 
   action_fallback(GORprojectWeb.FallbackController)
 
-  def create(conn, %{"hash" => hash, "stat" => stat}) do
-    with {:ok, %Character{} = character} <- Object.add_stat(hash, stat) do
+  def create(conn, %{"uuid" => uuid, "stat" => stat}) do
+    with {:ok, %Character{} = character} <- Object.add_stat(uuid, stat) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", character_path(conn, :show, character))

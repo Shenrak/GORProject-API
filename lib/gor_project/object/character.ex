@@ -4,7 +4,7 @@ defmodule GORproject.Object.Character do
 
   schema "characters" do
     field(:stats, :string)
-    field(:hash, Ecto.UUID)
+    field(:uuid, Ecto.UUID)
     field(:name, :string)
 
     timestamps()
@@ -15,14 +15,14 @@ defmodule GORproject.Object.Character do
     character
     |> cast(attrs, [:name, :stats])
     |> validate_required([:name, :stats])
-    |> generate_hash()
-    |> unique_constraint(:hash)
+    |> generate_uuid()
+    |> unique_constraint(:uuid)
   end
 
-  defp generate_hash(changeset) do
+  defp generate_uuid(changeset) do
     changeset =
-      case changeset.data.hash do
-        nil -> change(changeset, hash: Ecto.UUID.generate())
+      case changeset.data.uuid do
+        nil -> change(changeset, uuid: Ecto.UUID.generate())
         _ -> changeset
       end
 
