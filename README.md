@@ -6,7 +6,7 @@ This project aims to provide a REST API for a RPG-oriented chat. The API will be
 
 The game master will have features to easely handle the means of a P&P RPG (features yet to be fully defined). We also want to provide a global hub in which you can join a session whenever the game master is able to introduce you to the game. The list of features is still fluctuating, expect new things here!
 
-For the first version, we do not want to force users to create accounts, kind of like IRC. TODO: but will it be available?
+For the first version, we do not want to force users to create accounts, but we're not sure if we want to enable user registration at all.
 
 ## Contributing
 
