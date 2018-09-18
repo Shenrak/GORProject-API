@@ -17,4 +17,10 @@ defmodule GORprojectWeb.FallbackController do
     |> put_status(:not_found)
     |> render(GORprojectWeb.ErrorView, :"404")
   end
+
+  def call(conn, {:error, message}) do
+    conn
+    |> put_status(:not_found)
+    |> render(GORprojectWeb.ErrorView, :"404", message: message)
+  end
 end

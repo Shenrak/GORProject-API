@@ -46,15 +46,20 @@ defmodule GORproject.Object do
       )
 
     # add item management
-    character = Repo.one!(query)
-    stats = Poison.decode!(character.stats)
+    case Repo.one(query) do
+      {:ok, character} ->
+        stats = Poison.decode!(character.stats)
 
-    str =
-      Map.put(stats, newStat["name"], newStat["value"])
-      |> Poison.encode!()
+        str =
+          Map.put(stats, newStat["name"], newStat["value"])
+          |> Poison.encode!()
 
-    Character.changeset(character, %{stats: str})
-    |> Repo.update()
+        Character.changeset(character, %{stats: str})
+        |> Repo.update()
+
+      nil ->
+        {:error, "No character found for the given uuid"}
+    end
   end
 
   @doc """
