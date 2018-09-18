@@ -4,7 +4,7 @@ defmodule GORprojectWeb.CharacterController do
   alias GORproject.Object
   alias GORproject.Object.Character
 
-  action_fallback GORprojectWeb.FallbackController
+  action_fallback(GORprojectWeb.FallbackController)
 
   def index(conn, _params) do
     characters = Object.list_characters()
@@ -12,11 +12,17 @@ defmodule GORprojectWeb.CharacterController do
   end
 
   def create(conn, %{"character" => character_params}) do
-    with {:ok, %Character{} = character} <- Object.create_character(character_params) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", character_path(conn, :show, character))
-      |> render("show.json", character: character)
+    case character_params do
+      %{"name" => _, "stats" => _} ->
+        with {:ok, %Character{} = character} <- Object.create_character(character_params) do
+          conn
+          |> put_status(:created)
+          |> put_resp_header("location", character_path(conn, :show, character))
+          |> render("show.json", character: character)
+        end
+
+      _ ->
+        {:error, :bad_request}
     end
   end
 
@@ -35,6 +41,7 @@ defmodule GORprojectWeb.CharacterController do
 
   def delete(conn, %{"id" => id}) do
     character = Object.get_character!(id)
+
     with {:ok, %Character{}} <- Object.delete_character(character) do
       send_resp(conn, :no_content, "")
     end
