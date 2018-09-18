@@ -20,7 +20,8 @@ defmodule GORproject.Object.Character do
     |> unique_constraint(:hash)
   end
 
-  def generate_hash(changeset) do
+  def generate_hash(changeset) when changeset.hash == nil do
     change(changeset, hash: Ecto.UUID.generate())
   end
+  def generate_hash(changeset), do: changeset
 end

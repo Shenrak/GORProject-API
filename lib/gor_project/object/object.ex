@@ -3,7 +3,7 @@ defmodule GORproject.Object do
   The Object context.
   """
 
-  import Ecto.Query, warn: false
+  import Ecto.Query, only: [from: 2]
   alias GORproject.Repo
 
   alias GORproject.Object.Character
@@ -36,6 +36,21 @@ defmodule GORproject.Object do
 
   """
   def get_character!(id), do: Repo.get!(Character, id)
+
+  def add_characteristic(hash, stat) do
+    query =
+      from(c in Character,
+        where: c.hash == ^hash,
+        select: c
+      )
+
+    character = Repo.one!(query)
+    stats = Poison.decode!(character.characteristics)
+    Map.put(stats, stat["name"], stat["value"])
+    |> Poison.encode!()
+    |> Repo.update!()
+    |> IO.inspect(label: "Poison result")
+  end
 
   @doc """
   Creates a character.
