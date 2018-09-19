@@ -75,13 +75,17 @@ defmodule GORproject.Object do
 
   """
   def create_character(attrs \\ %{}) do
-    stats =
+    attrs =
       case attrs["stats"] do
-        "{}" -> attrs["stats"]
-        _ -> Poison.encode!(attrs["stats"])
-      end
+        "{}" ->
+          attrs
 
-    attrs = %{attrs | "stats" => stats}
+        nil ->
+          attrs
+
+        _ ->
+          %{attrs | "stats" => Poison.encode!(attrs["stats"])}
+      end
 
     %Character{}
     |> Character.changeset(attrs)
