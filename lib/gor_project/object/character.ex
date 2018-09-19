@@ -1,11 +1,13 @@
 defmodule GORproject.Object.Character do
   use Ecto.Schema
   import Ecto.Changeset
+  alias GORproject.Object.Item
 
   schema "characters" do
     field(:stats, :string)
     field(:uuid, Ecto.UUID)
     field(:name, :string)
+    has_many(:items, Item)
 
     timestamps()
   end

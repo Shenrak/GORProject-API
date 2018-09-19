@@ -1,12 +1,13 @@
 defmodule GORproject.Object.Item do
   use Ecto.Schema
   import Ecto.Changeset
+  alias GORproject.Object.Character
 
-
-  schema "item" do
-    field :hash, Ecto.UUID
-    field :name, :string
-    field :stats, :string
+  schema "items" do
+    field(:uuid, Ecto.UUID)
+    field(:name, :string)
+    field(:stats, :string)
+    belongs_to(:character, Character)
 
     timestamps()
   end
@@ -14,8 +15,8 @@ defmodule GORproject.Object.Item do
   @doc false
   def changeset(item, attrs) do
     item
-    |> cast(attrs, [:name, :stats])
-    |> validate_required([:name, :stats])
+    |> cast(attrs, [:name, :stats, :character_id])
+    |> validate_required([:name, :stats, :character_id])
     |> generate_uuid()
     |> unique_constraint(:uuid)
   end

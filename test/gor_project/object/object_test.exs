@@ -67,12 +67,12 @@ defmodule GORproject.ObjectTest do
     end
   end
 
-  describe "item" do
+  describe "items" do
     alias GORproject.Object.Item
 
-    @valid_attrs %{hash: "7488a646-e31f-11e4-aace-600308960662", name: "some name", stats: "some stats"}
-    @update_attrs %{hash: "7488a646-e31f-11e4-aace-600308960668", name: "some updated name", stats: "some updated stats"}
-    @invalid_attrs %{hash: nil, name: nil, stats: nil}
+    @valid_attrs %{uuid: "7488a646-e31f-11e4-aace-600308960662", name: "some name", stats: "some stats"}
+    @update_attrs %{uuid: "7488a646-e31f-11e4-aace-600308960668", name: "some updated name", stats: "some updated stats"}
+    @invalid_attrs %{uuid: nil, name: nil, stats: nil}
 
     def item_fixture(attrs \\ %{}) do
       {:ok, item} =
@@ -95,7 +95,7 @@ defmodule GORproject.ObjectTest do
 
     test "create_item/1 with valid data creates a item" do
       assert {:ok, %Item{} = item} = Object.create_item(@valid_attrs)
-      assert item.hash == "7488a646-e31f-11e4-aace-600308960662"
+      assert item.uuid == "7488a646-e31f-11e4-aace-600308960662"
       assert item.name == "some name"
       assert item.stats == "some stats"
     end
@@ -108,7 +108,7 @@ defmodule GORproject.ObjectTest do
       item = item_fixture()
       assert {:ok, item} = Object.update_item(item, @update_attrs)
       assert %Item{} = item
-      assert item.hash == "7488a646-e31f-11e4-aace-600308960668"
+      assert item.uuid == "7488a646-e31f-11e4-aace-600308960668"
       assert item.name == "some updated name"
       assert item.stats == "some updated stats"
     end

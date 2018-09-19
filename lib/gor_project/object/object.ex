@@ -18,7 +18,8 @@ defmodule GORproject.Object do
 
   """
   def list_characters do
-    Repo.all(Character)
+    # Repo.all(Character)
+    Repo.all(from(c in Character, preload: :items))
   end
 
   @doc """
@@ -35,7 +36,10 @@ defmodule GORproject.Object do
       ** (Ecto.NoResultsError)
 
   """
-  def get_character!(id), do: Repo.get!(Character, id)
+  def get_character!(id) do
+    list = Repo.all(from(c in Character, where: c.id == ^id, preload: :items))
+    hd(list)
+  end
 
   def add_stat(uuid, newStat) do
     query =
@@ -87,7 +91,7 @@ defmodule GORproject.Object do
           %{attrs | "stats" => Poison.encode!(attrs["stats"])}
       end
 
-    %Character{}
+    %Character{items: []}
     |> Character.changeset(attrs)
     |> Repo.insert()
   end
@@ -183,6 +187,18 @@ defmodule GORproject.Object do
 
   """
   def create_item(attrs \\ %{}) do
+    attrs =
+      case attrs["stats"] do
+        "{}" ->
+          attrs
+
+        nil ->
+          attrs
+
+        _ ->
+          %{attrs | "stats" => Poison.encode!(attrs["stats"])}
+      end
+
     %Item{}
     |> Item.changeset(attrs)
     |> Repo.insert()
