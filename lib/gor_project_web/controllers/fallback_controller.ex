@@ -6,7 +6,7 @@ defmodule GORprojectWeb.FallbackController do
   """
   use GORprojectWeb, :controller
 
-  def call(conn, {:error, %Ecto.Changeset{} = changeset}) do
+  def call(conn, {:error, changeset}) do
     conn
     |> put_status(:unprocessable_entity)
     |> render(GORprojectWeb.ChangesetView, "error.json", changeset: changeset)

@@ -7,6 +7,79 @@ defmodule GORproject.Object do
   alias GORproject.Repo
 
   alias GORproject.Object.Character
+  alias GORproject.Object.Item
+
+  def add_stat(uuid, newStat) do
+    queryC =
+      from(
+        c in Character,
+        where: c.uuid == ^uuid,
+        select: c
+      )
+
+    queryI =
+      from(
+        i in Item,
+        where: i.uuid == ^uuid,
+        select: i
+      )
+
+    case Repo.one(queryC) do
+      nil ->
+        case Repo.one(queryI) do
+          nil ->
+            {:error, "No object found for the given uuid"}
+
+          item ->
+            stats = Map.put(item.stats, newStat["name"], newStat["value"])
+
+            Item.changeset(item, %{stats: stats})
+            |> Repo.update()
+        end
+
+      character ->
+        stats = Map.put(character.stats, newStat["name"], newStat["value"])
+
+        Character.changeset(character, %{stats: stats})
+        |> Repo.update()
+    end
+  end
+
+  def del_stat(uuid, newStat) do
+    queryC =
+      from(
+        c in Character,
+        where: c.uuid == ^uuid,
+        select: c
+      )
+
+    queryI =
+      from(
+        i in Item,
+        where: i.uuid == ^uuid,
+        select: i
+      )
+
+    case Repo.one(queryC) do
+      nil ->
+        case Repo.one(queryI) do
+          nil ->
+            {:error, "No object found for the given uuid"}
+
+          item ->
+            stats = Map.delete(item.stats, newStat["name"])
+
+            Item.changeset(item, %{stats: stats})
+            |> Repo.update()
+        end
+
+      character ->
+        stats = Map.delete(character.stats, newStat["name"])
+
+        Character.changeset(character, %{stats: stats})
+        |> Repo.update()
+    end
+  end
 
   @doc """
   Returns the list of characters.
@@ -41,31 +114,6 @@ defmodule GORproject.Object do
     hd(list)
   end
 
-  def add_stat(uuid, newStat) do
-    query =
-      from(
-        c in Character,
-        where: c.uuid == ^uuid,
-        select: c
-      )
-
-    # add item management
-    case Repo.one(query) do
-      {:ok, character} ->
-        stats = Poison.decode!(character.stats)
-
-        str =
-          Map.put(stats, newStat["name"], newStat["value"])
-          |> Poison.encode!()
-
-        Character.changeset(character, %{stats: str})
-        |> Repo.update()
-
-      nil ->
-        {:error, "No character found for the given uuid"}
-    end
-  end
-
   @doc """
   Creates a character.
 
@@ -79,18 +127,6 @@ defmodule GORproject.Object do
 
   """
   def create_character(attrs \\ %{}) do
-    attrs =
-      case attrs["stats"] do
-        "{}" ->
-          attrs
-
-        nil ->
-          attrs
-
-        _ ->
-          %{attrs | "stats" => Poison.encode!(attrs["stats"])}
-      end
-
     %Character{items: []}
     |> Character.changeset(attrs)
     |> Repo.insert()
@@ -187,18 +223,6 @@ defmodule GORproject.Object do
 
   """
   def create_item(attrs \\ %{}) do
-    attrs =
-      case attrs["stats"] do
-        "{}" ->
-          attrs
-
-        nil ->
-          attrs
-
-        _ ->
-          %{attrs | "stats" => Poison.encode!(attrs["stats"])}
-      end
-
     %Item{}
     |> Item.changeset(attrs)
     |> Repo.insert()

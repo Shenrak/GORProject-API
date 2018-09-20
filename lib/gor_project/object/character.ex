@@ -4,7 +4,7 @@ defmodule GORproject.Object.Character do
   alias GORproject.Object.Item
 
   schema "characters" do
-    field(:stats, :string)
+    field(:stats, :map)
     field(:uuid, Ecto.UUID)
     field(:name, :string)
     has_many(:items, Item)
