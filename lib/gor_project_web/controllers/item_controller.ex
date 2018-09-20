@@ -40,10 +40,17 @@ defmodule GORprojectWeb.ItemController do
   end
 
   def delete(conn, %{"id" => id}) do
-    item = Object.get_item!(id)
+    uuid =
+      get_req_header(conn, "uuid")
+      |> hd()
 
-    with {:ok, %Item{}} <- Object.delete_item(item) do
-      send_resp(conn, :no_content, "")
+    case Object.delete_item(id, uuid) do
+      {:ok, %Item{}} ->
+        send_resp(conn, :no_content, "")
+
+      {:error, message} ->
+        IO.inspect(message)
+        {:error, message}
     end
   end
 end

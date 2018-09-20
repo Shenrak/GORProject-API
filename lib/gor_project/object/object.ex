@@ -45,7 +45,7 @@ defmodule GORproject.Object do
     end
   end
 
-  def del_stat(uuid, newStat) do
+  def delete_stat(uuid, stat) do
     queryC =
       from(
         c in Character,
@@ -67,14 +67,14 @@ defmodule GORproject.Object do
             {:error, "No object found for the given uuid"}
 
           item ->
-            stats = Map.delete(item.stats, newStat["name"])
+            stats = Map.delete(item.stats, stat)
 
             Item.changeset(item, %{stats: stats})
             |> Repo.update()
         end
 
       character ->
-        stats = Map.delete(character.stats, newStat["name"])
+        stats = Map.delete(character.stats, stat)
 
         Character.changeset(character, %{stats: stats})
         |> Repo.update()
@@ -110,8 +110,8 @@ defmodule GORproject.Object do
 
   """
   def get_character!(id) do
-    list = Repo.all(from(c in Character, where: c.id == ^id, preload: :items))
-    hd(list)
+    Repo.all(from(c in Character, where: c.id == ^id, preload: :items))
+    |> hd()
   end
 
   @doc """
@@ -208,7 +208,10 @@ defmodule GORproject.Object do
       ** (Ecto.NoResultsError)
 
   """
-  def get_item!(id), do: Repo.get!(Item, id)
+  def get_item!(id) do
+    list = Repo.all(from(i in Item, where: i.id == ^id))
+    hd(list)
+  end
 
   @doc """
   Creates a item.
@@ -258,8 +261,10 @@ defmodule GORproject.Object do
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_item(%Item{} = item) do
-    Repo.delete(item)
+  def delete_item(id, uuid) do
+    Repo.all(from(i in Item, where: i.id == ^id, where: i.uuid == ^uuid))
+    |> hd()
+    |> Repo.delete()
   end
 
   @doc """
