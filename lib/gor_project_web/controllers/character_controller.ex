@@ -26,24 +26,39 @@ defmodule GORprojectWeb.CharacterController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    character = Object.get_character!(id)
-    render(conn, "show.json", character: character)
-  end
+  def show(conn, _) do
+    uuid =
+      get_req_header(conn, "uuid")
+      |> hd()
 
-  def update(conn, %{"id" => id, "character" => character_params}) do
-    character = Object.get_character!(id)
+    case Object.get_character(uuid) do
+      {:ok, character} ->
+        render(conn, "show.json", character: character)
 
-    with {:ok, %Character{} = character} <- Object.update_character(character, character_params) do
-      render(conn, "show.json", character: character)
+      {:error, message} ->
+        {:error, message}
     end
   end
 
-  def delete(conn, %{"id" => id}) do
-    character = Object.get_character!(id)
+  # def update(conn, %{"id" => id, "character" => character_params}) do
+  #   character = Object.get_character!(id)
 
-    with {:ok, %Character{}} <- Object.delete_character(character) do
-      send_resp(conn, :no_content, "")
+  #   with {:ok, %Character{} = character} <- Object.update_character(character, character_params) do
+  #     render(conn, "show.json", character: character)
+  #   end
+  # end
+
+  def delete(conn, %{"id" => id}) do
+    uuid =
+      get_req_header(conn, "uuid")
+      |> hd()
+
+    case Object.delete_character(id, uuid) do
+      {:ok, %Character{}} ->
+        send_resp(conn, :no_content, "")
+
+      {:error, message} ->
+        {:error, message}
     end
   end
 end

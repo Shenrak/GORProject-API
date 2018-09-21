@@ -109,9 +109,14 @@ defmodule GORproject.Object do
       ** (Ecto.NoResultsError)
 
   """
-  def get_character!(id) do
-    Repo.all(from(c in Character, where: c.id == ^id, preload: :items))
-    |> hd()
+  def get_character(uuid) do
+    case Repo.all(from(c in Character, where: c.uuid == ^uuid, preload: :items)) do
+      [] ->
+        {:error, :bad_request}
+
+      list ->
+        {:ok, hd(list)}
+    end
   end
 
   @doc """
@@ -155,15 +160,17 @@ defmodule GORproject.Object do
 
   ## Examples
 
-      iex> delete_character(character)
+      iex> delete_character(id, uuid)
       {:ok, %Character{}}
 
-      iex> delete_character(character)
+      iex> delete_character(id, uuid)
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_character(%Character{} = character) do
-    Repo.delete(character)
+  def delete_character(id, uuid) do
+    Repo.all(from(c in Character, where: c.id == ^id, where: c.uuid == ^uuid))
+    |> hd()
+    |> Repo.delete()
   end
 
   @doc """
@@ -208,9 +215,14 @@ defmodule GORproject.Object do
       ** (Ecto.NoResultsError)
 
   """
-  def get_item!(id) do
-    list = Repo.all(from(i in Item, where: i.id == ^id))
-    hd(list)
+  def get_item(uuid) do
+    case Repo.all(from(i in Item, where: i.uuid == ^uuid)) do
+      [] ->
+        {:error, :bad_request}
+
+      list ->
+        {:ok, hd(list)}
+    end
   end
 
   @doc """
@@ -254,10 +266,10 @@ defmodule GORproject.Object do
 
   ## Examples
 
-      iex> delete_item(item)
+      iex> delete_item(id, uuid)
       {:ok, %Item{}}
 
-      iex> delete_item(item)
+      iex> delete_item(id, uuid)
       {:error, %Ecto.Changeset{}}
 
   """
