@@ -22,7 +22,7 @@ defmodule GORprojectWeb.ItemController do
         end
 
       _ ->
-        {:error, :bad_request}
+        {:error, :bad_params}
     end
   end
 
@@ -31,13 +31,11 @@ defmodule GORprojectWeb.ItemController do
       get_req_header(conn, "uuid")
       |> hd()
 
-    case Object.get_item(uuid) do
-      {:ok, item} ->
-        render(conn, "show.json", item: item)
-
-      {:error, message} ->
-        {:error, message}
+    with {:ok, item} <- Object.get_item!(uuid) do
+      render(conn, "show.json", item: item)
     end
+  rescue
+    _ -> {:error, :bad_uuid}
   end
 
   # def update(conn, %{"id" => id, "item" => item_params}) do
@@ -56,9 +54,6 @@ defmodule GORprojectWeb.ItemController do
     case Object.delete_item(id, uuid) do
       {:ok, %Item{}} ->
         send_resp(conn, :no_content, "")
-
-      {:error, message} ->
-        {:error, message}
     end
   end
 end

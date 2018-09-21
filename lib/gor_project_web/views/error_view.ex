@@ -1,7 +1,7 @@
 defmodule GORprojectWeb.ErrorView do
   use GORprojectWeb, :view
 
-  def render("400.json", %{message: message}) when not is_atom(message) do
+  def render("custom.json", %{message: message}) do
     %{errors: %{detail: message}}
   end
 

@@ -109,14 +109,9 @@ defmodule GORproject.Object do
       ** (Ecto.NoResultsError)
 
   """
-  def get_character(uuid) do
-    case Repo.all(from(c in Character, where: c.uuid == ^uuid, preload: :items)) do
-      [] ->
-        {:error, :bad_request}
-
-      list ->
-        {:ok, hd(list)}
-    end
+  def get_character!(uuid) do
+    Repo.all(from(c in Character, where: c.uuid == ^uuid, preload: :items))
+    |> hd()
   end
 
   @doc """
@@ -215,14 +210,9 @@ defmodule GORproject.Object do
       ** (Ecto.NoResultsError)
 
   """
-  def get_item(uuid) do
-    case Repo.all(from(i in Item, where: i.uuid == ^uuid)) do
-      [] ->
-        {:error, :bad_request}
-
-      list ->
-        {:ok, hd(list)}
-    end
+  def get_item!(uuid) do
+    Repo.all(from(i in Item, where: i.uuid == ^uuid))
+    |> hd()
   end
 
   @doc """

@@ -22,7 +22,7 @@ defmodule GORprojectWeb.CharacterController do
         end
 
       _ ->
-        {:error, :bad_request}
+        {:error, :bad_params}
     end
   end
 
@@ -31,13 +31,11 @@ defmodule GORprojectWeb.CharacterController do
       get_req_header(conn, "uuid")
       |> hd()
 
-    case Object.get_character(uuid) do
-      {:ok, character} ->
-        render(conn, "show.json", character: character)
-
-      {:error, message} ->
-        {:error, message}
+    with {:ok, character} <- Object.get_character!(uuid) do
+      render(conn, "show.json", character: character)
     end
+  rescue
+    _ -> {:error, :bad_uuid}
   end
 
   # def update(conn, %{"id" => id, "character" => character_params}) do
@@ -56,9 +54,6 @@ defmodule GORprojectWeb.CharacterController do
     case Object.delete_character(id, uuid) do
       {:ok, %Character{}} ->
         send_resp(conn, :no_content, "")
-
-      {:error, message} ->
-        {:error, message}
     end
   end
 end

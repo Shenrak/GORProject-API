@@ -6,12 +6,6 @@ defmodule GORprojectWeb.FallbackController do
   """
   use GORprojectWeb, :controller
 
-  def call(conn, {:error, changeset}) do
-    conn
-    |> put_status(:unprocessable_entity)
-    |> render(GORprojectWeb.ChangesetView, "error.json", changeset: changeset)
-  end
-
   def call(conn, {:error, :bad_request}) do
     conn
     |> put_status(:bad_request)
@@ -24,9 +18,27 @@ defmodule GORprojectWeb.FallbackController do
     |> render(GORprojectWeb.ErrorView, :"404")
   end
 
+  def call(conn, {:error, :bad_params}) do
+    conn
+    |> put_status(:bad_request)
+    |> render(GORprojectWeb.ErrorView, :custom, message: "Bad request parameters")
+  end
+
+  def call(conn, {:error, :bad_uuid}) do
+    conn
+    |> put_status(:bad_request)
+    |> render(GORprojectWeb.ErrorView, :custom, message: "Bad uuid provided")
+  end
+
   def call(conn, {:error, message}) do
     conn
     |> put_status(:not_found)
     |> render(GORprojectWeb.ErrorView, :"404", message: message)
+  end
+
+  def call(conn, {:error, changeset}) do
+    conn
+    |> put_status(:unprocessable_entity)
+    |> render(GORprojectWeb.ChangesetView, "error.json", changeset: changeset)
   end
 end
