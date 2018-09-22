@@ -1,4 +1,4 @@
-# GORproject
+# GORproject LOL
 
 ## What is this project ?
 
