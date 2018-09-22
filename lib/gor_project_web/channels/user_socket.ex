@@ -2,10 +2,10 @@ defmodule GORprojectWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", GORprojectWeb.RoomChannel
+  channel("room:*", GORprojectWeb.RoomChannel)
 
   ## Transports
-  transport :websocket, Phoenix.Transports.WebSocket
+  transport(:websocket, Phoenix.Transports.WebSocket)
   # transport :longpoll, Phoenix.Transports.LongPoll
 
   # Socket params are passed from the client and can
@@ -19,8 +19,15 @@ defmodule GORprojectWeb.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
-  def connect(_params, socket) do
-    {:ok, socket}
+  def connect(params, socket) do
+    IO.inspect(params["uuid"])
+    case params["uuid"] do
+      "l" ->
+        {:ok, socket}
+
+      _ ->
+        :error
+    end
   end
 
   # Socket id's are topics that allow you to identify all sockets for a given user:
