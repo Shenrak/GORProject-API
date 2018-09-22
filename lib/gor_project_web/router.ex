@@ -8,6 +8,8 @@ defmodule GORprojectWeb.Router do
 
   scope "/api", GORprojectWeb do
     pipe_through(:api)
+    resources("/users", UserController, except: [:new, :edit])
+
     resources("/characters", CharacterController, except: [:update, :show, :new, :edit])
     get("/characters/one", CharacterController, :show)
 
