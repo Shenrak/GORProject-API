@@ -6,6 +6,22 @@ defmodule GORprojectWeb.UserController do
 
   action_fallback GORprojectWeb.FallbackController
 
+  def sign_in(conn, %{"login" => login, "password" => password}) do
+    case GORproject.Auth.authenticate_user(login, password) do
+      {:ok, user} ->
+        token = Phoenix.Token.sign(GORprojectWeb.Endpoint, "user salt", user.id)
+        # Phoenix.Token.verify(GORproject.Endpoint, "user salt", token, max_age: 86400)
+        conn
+        |> put_status(:ok)
+        |> render(GORprojectWeb.UserView, "sign_in.json", user: user, token: token)
+
+      {:error, message} ->
+        conn
+        |> put_status(:unauthorized)
+        |> render(GORprojectWeb.ErrorView, "401.json", message: message)
+    end
+  end
+
   def index(conn, _params) do
     users = Auth.list_users()
     render(conn, "index.json", users: users)

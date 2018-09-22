@@ -40,7 +40,8 @@ defmodule GORproject.Mixfile do
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
       {:corsica, "~> 1.0"},
-      {:bcrypt_elixir, "~> 1.0"}
+      {:bcrypt_elixir, "~> 1.0"},
+      {:phoenix_token_plug, "~> 0.1.0"}
     ]
   end
 
