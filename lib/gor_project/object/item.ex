@@ -1,22 +1,22 @@
-defmodule GORproject.Object.Character do
+defmodule GORproject.Object.Item do
   use Ecto.Schema
   import Ecto.Changeset
-  alias GORproject.Object.Item
+  alias GORproject.Object.Character
 
-  schema "characters" do
-    field(:stats, :map)
+  schema "items" do
     field(:uuid, Ecto.UUID)
     field(:name, :string)
-    has_many(:items, Item)
+    field(:stats, :map)
+    belongs_to(:character, Character)
 
     timestamps()
   end
 
   @doc false
-  def changeset(character, attrs) do
-    character
-    |> cast(attrs, [:name, :stats])
-    |> validate_required([:name, :stats])
+  def changeset(item, attrs) do
+    item
+    |> cast(attrs, [:name, :stats, :character_id])
+    |> validate_required([:name, :stats, :character_id])
     |> generate_uuid()
     |> unique_constraint(:uuid)
   end

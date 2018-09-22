@@ -1,6 +1,10 @@
 defmodule GORprojectWeb.ErrorView do
   use GORprojectWeb, :view
 
+  def render("custom.json", %{message: message}) do
+    %{errors: %{detail: message}}
+  end
+
   def render("400.json", _assigns) do
     %{errors: %{detail: "Bad request"}}
   end
