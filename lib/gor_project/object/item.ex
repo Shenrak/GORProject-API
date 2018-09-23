@@ -16,6 +16,7 @@ defmodule GORproject.Object.Item do
   def changeset(item, attrs) do
     item
     |> cast(attrs, [:name, :stats, :character_id])
+    |> foreign_key_constraint(:character_id)
     |> validate_required([:name, :stats, :character_id])
     |> generate_uuid()
     |> unique_constraint(:uuid)

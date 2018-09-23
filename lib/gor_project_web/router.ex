@@ -13,12 +13,14 @@ defmodule GORprojectWeb.Router do
 
   scope "/api", GORprojectWeb do
     pipe_through(:api)
-    resources("/users", UserController, except: [:new, :edit])
+    post("/users", UserController, :create)
     post("/users/sign_in", UserController, :sign_in)
   end
 
   scope "/api", GORprojectWeb do
     pipe_through([:api, :auth_api])
+    resources("/users", UserController, except: [:delete, :create, :new, :edit])
+
     resources("/characters", CharacterController, except: [:update, :show, :new, :edit])
     get("/characters/one", CharacterController, :show)
 
@@ -26,6 +28,6 @@ defmodule GORprojectWeb.Router do
     get("/items/one", ItemController, :show)
 
     post("/stats", StatController, :create)
-    delete("/stats/:stat", StatController, :delete)
+    delete("/stats", StatController, :delete)
   end
 end

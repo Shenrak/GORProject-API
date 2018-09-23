@@ -1,11 +1,13 @@
 defmodule GORproject.Auth.User do
   use Ecto.Schema
   import Ecto.Changeset
+  alias GORproject.Object.Character
 
   schema "users" do
     field(:login, :string)
     field(:password, :string, virtual: true)
     field(:password_hash, :string)
+    has_many(:characters, Character)
 
     timestamps()
   end

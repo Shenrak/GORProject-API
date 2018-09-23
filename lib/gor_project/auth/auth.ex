@@ -37,7 +37,7 @@ defmodule GORproject.Auth do
 
   """
   def list_users do
-    Repo.all(User)
+    Repo.all(from(c in User, preload: [{:characters, :items}]))
   end
 
   @doc """
@@ -54,7 +54,13 @@ defmodule GORproject.Auth do
       ** (Ecto.NoResultsError)
 
   """
-  def get_user!(id), do: Repo.get!(User, id)
+  def get_user(id) do
+    resp =
+      Repo.all(from(u in User, where: u.id == ^id, preload: [{:characters, :items}]))
+      |> hd()
+
+    {:ok, resp}
+  end
 
   @doc """
   Creates a user.

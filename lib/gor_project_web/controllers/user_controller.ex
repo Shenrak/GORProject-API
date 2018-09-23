@@ -4,7 +4,7 @@ defmodule GORprojectWeb.UserController do
   alias GORproject.Auth
   alias GORproject.Auth.User
 
-  action_fallback GORprojectWeb.FallbackController
+  action_fallback(GORprojectWeb.FallbackController)
 
   def sign_in(conn, %{"login" => login, "password" => password}) do
     case GORproject.Auth.authenticate_user(login, password) do
@@ -37,12 +37,15 @@ defmodule GORprojectWeb.UserController do
   end
 
   def show(conn, %{"id" => id}) do
-    user = Auth.get_user!(id)
-    render(conn, "show.json", user: user)
+    with {:ok, user} <- Auth.get_user(id) do
+      render(conn, "show.json", user: user)
+    end
+  rescue
+    _ -> {:error, :bad_id}
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
-    user = Auth.get_user!(id)
+    {:ok, user} = Auth.get_user(id)
 
     with {:ok, %User{} = user} <- Auth.update_user(user, user_params) do
       render(conn, "show.json", user: user)
@@ -50,7 +53,8 @@ defmodule GORprojectWeb.UserController do
   end
 
   def delete(conn, %{"id" => id}) do
-    user = Auth.get_user!(id)
+    user = Auth.get_user(id)
+
     with {:ok, %User{}} <- Auth.delete_user(user) do
       send_resp(conn, :no_content, "")
     end

@@ -16,7 +16,8 @@ defmodule GORprojectWeb.CharacterView do
       name: character.name,
       uuid: character.uuid,
       stats: character.stats,
-      items: render_many(character.items, GORprojectWeb.ItemView, "item.json", as: :item)
+      items: render_many(character.items, GORprojectWeb.ItemView, "item.json", as: :item),
+      user_id: character.user_id
     }
   end
 end

@@ -11,7 +11,10 @@ defmodule GORprojectWeb.UserView do
   end
 
   def render("user.json", %{user: user}) do
-    %{id: user.id, login: user.login}
+    %{id: user.id,
+    login: user.login,
+    characters: render_many(user.characters, GORprojectWeb.CharacterView, "character.json", as: :character)
+  }
   end
 
   def render("sign_in.json", %{user: user, token: token}) do
