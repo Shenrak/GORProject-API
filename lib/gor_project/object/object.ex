@@ -45,17 +45,20 @@ defmodule GORproject.Object do
     end
   end
 
-  def delete_stat(uuid, stat) do
+  def delete_stat(uuid, user_id, stat) do
     queryC =
       from(
         c in Character,
         where: c.uuid == ^uuid,
+        where: c.user_id == ^user_id,
         select: c
       )
 
     queryI =
       from(
         i in Item,
+        join: c in assoc(i, :character),
+        where: c.user_id == ^user_id,
         where: i.uuid == ^uuid,
         select: i
       )
@@ -64,11 +67,13 @@ defmodule GORproject.Object do
       nil ->
         case Repo.one(queryI) do
           nil ->
-            {:error, "No object found for the given uuid"}
+            {:error, :bad_uuid}
 
           item ->
+            IO.inspect(stat)
+            IO.inspect(item.stats)
             stats = Map.delete(item.stats, stat)
-
+            IO.inspect(stats)
             Item.changeset(item, %{stats: stats})
             |> Repo.update()
         end
@@ -90,9 +95,9 @@ defmodule GORproject.Object do
       [%Character{}, ...]
 
   """
-  def list_characters do
+  def list_characters(id) do
     # Repo.all(Character)
-    Repo.all(from(c in Character, preload: :items))
+    Repo.all(from(c in Character, where: c.user_id == ^id, preload: :items))
   end
 
   @doc """
@@ -109,9 +114,12 @@ defmodule GORproject.Object do
       ** (Ecto.NoResultsError)
 
   """
-  def get_character!(uuid) do
-    Repo.all(from(c in Character, where: c.uuid == ^uuid, preload: :items))
-    |> hd()
+  def get_character(uuid) do
+    resp =
+      Repo.all(from(c in Character, where: c.uuid == ^uuid, preload: :items))
+      |> hd()
+
+    {:ok, resp}
   end
 
   @doc """
@@ -162,8 +170,8 @@ defmodule GORproject.Object do
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_character(id, uuid) do
-    Repo.all(from(c in Character, where: c.id == ^id, where: c.uuid == ^uuid))
+  def delete_character(character_id, user_id) do
+    Repo.all(from(c in Character, where: c.id == ^character_id, where: c.user_id == ^user_id))
     |> hd()
     |> Repo.delete()
   end
@@ -210,9 +218,12 @@ defmodule GORproject.Object do
       ** (Ecto.NoResultsError)
 
   """
-  def get_item!(uuid) do
-    Repo.all(from(i in Item, where: i.uuid == ^uuid))
-    |> hd()
+  def get_item(uuid) do
+    resp =
+      Repo.all(from(i in Item, where: i.uuid == ^uuid))
+      |> hd()
+
+    {:ok, resp}
   end
 
   @doc """
@@ -263,8 +274,14 @@ defmodule GORproject.Object do
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_item(id, uuid) do
-    Repo.all(from(i in Item, where: i.id == ^id, where: i.uuid == ^uuid))
+  def delete_item(item_id, user_id) do
+    Repo.all(
+      from(i in Item,
+        join: c in assoc(i, :character),
+        where: i.id == ^item_id,
+        where: c.user_id == ^user_id
+      )
+    )
     |> hd()
     |> Repo.delete()
   end

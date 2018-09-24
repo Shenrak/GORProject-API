@@ -18,7 +18,7 @@ defmodule GORprojectWeb.ErrorView do
   end
 
   def render("404.json", _assigns) do
-    %{errors: %{detail: "Endpoint not found"}}
+    %{errors: %{detail: "Unused path"}}
   end
 
   def render("500.json", _assigns) do

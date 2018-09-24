@@ -5,8 +5,8 @@ defmodule GORprojectWeb.RoomChannel do
     {:ok, socket}
   end
 
-  def handle_in("new_msg", %{"body" => body}, socket) do
-    broadcast(socket, "new_msg", %{body: body})
+  def handle_in("new_msg", %{"message" => message, "userName" => userName}, socket) do
+    broadcast(socket, "new_msg", %{message: message, userName: userName})
     {:noreply, socket}
   end
 end

@@ -12,24 +12,21 @@ defmodule GORprojectWeb.StatController do
       {:ok, %Character{} = character} ->
         conn
         |> put_status(:created)
-        |> put_resp_header("location", character_path(conn, :show, character))
+        |> put_resp_header("location", character_path(conn, :show))
         |> render("show.json", character: character)
 
       {:ok, %Item{} = item} ->
         conn
         |> put_status(:created)
-        |> put_resp_header("location", item_path(conn, :show, item))
+        |> put_resp_header("location", item_path(conn, :show))
         |> render("show.json", item: item)
     end
   rescue
     _ -> {:error, :bad_params}
   end
 
-  def delete(conn, %{"stat" => stat}) do
-    result =
-      get_req_header(conn, "uuid")
-      |> hd()
-      |> Object.delete_stat(stat)
+  def delete(conn, %{"uuid" => uuid, "stat" => stat}) do
+    result = Object.delete_stat(uuid, conn.assigns.user, stat)
 
     case result do
       {:ok, %Character{}} ->

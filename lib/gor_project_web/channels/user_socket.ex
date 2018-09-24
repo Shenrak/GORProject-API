@@ -20,9 +20,10 @@ defmodule GORprojectWeb.UserSocket do
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
   def connect(params, socket) do
-    IO.inspect(params["uuid"])
-    case params["uuid"] do
-      "l" ->
+    IO.inspect(params["token"])
+
+    case Phoenix.Token.verify(GORprojectWeb.Endpoint, "user salt", params["token"], max_age: 86400) do
+      {:ok, _id} ->
         {:ok, socket}
 
       _ ->

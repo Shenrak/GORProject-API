@@ -30,10 +30,10 @@ defmodule GORprojectWeb.FallbackController do
     |> render(GORprojectWeb.ErrorView, :custom, message: "Bad uuid provided")
   end
 
-  def call(conn, {:error, message}) do
+  def call(conn, {:error, :bad_id}) do
     conn
-    |> put_status(:not_found)
-    |> render(GORprojectWeb.ErrorView, :"404", message: message)
+    |> put_status(:bad_request)
+    |> render(GORprojectWeb.ErrorView, :custom, message: "Bad id provided")
   end
 
   def call(conn, {:error, changeset}) do

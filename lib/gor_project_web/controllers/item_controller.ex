@@ -17,7 +17,7 @@ defmodule GORprojectWeb.ItemController do
         with {:ok, %Item{} = item} <- Object.create_item(item_params) do
           conn
           |> put_status(:created)
-          |> put_resp_header("location", item_path(conn, :show, item))
+          |> put_resp_header("location", item_path(conn, :show))
           |> render("show.json", item: item)
         end
 
@@ -31,7 +31,7 @@ defmodule GORprojectWeb.ItemController do
       get_req_header(conn, "uuid")
       |> hd()
 
-    with {:ok, item} <- Object.get_item!(uuid) do
+    with {:ok, item} <- Object.get_item(uuid) do
       render(conn, "show.json", item: item)
     end
   rescue
@@ -47,11 +47,8 @@ defmodule GORprojectWeb.ItemController do
   # end
 
   def delete(conn, %{"id" => id}) do
-    uuid =
-      get_req_header(conn, "uuid")
-      |> hd()
 
-    case Object.delete_item(id, uuid) do
+    case Object.delete_item(id, conn.assigns.user) do
       {:ok, %Item{}} ->
         send_resp(conn, :no_content, "")
     end
