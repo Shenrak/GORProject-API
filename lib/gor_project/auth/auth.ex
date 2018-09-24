@@ -9,7 +9,7 @@ defmodule GORproject.Auth do
   alias GORproject.Auth.User
 
   def authenticate_user(login, password) do
-    query = from(u in User, where: u.login == ^login)
+    query = from(u in User, where: u.login == ^login, preload: [{:characters, :items}])
     query |> Repo.one() |> verify_password(password)
   end
 
@@ -75,7 +75,7 @@ defmodule GORproject.Auth do
 
   """
   def create_user(attrs \\ %{}) do
-    %User{}
+    %User{characters: []}
     |> User.changeset(attrs)
     |> Repo.insert()
   end
