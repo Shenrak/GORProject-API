@@ -6,7 +6,7 @@ defmodule GORproject.Object.Item do
   schema "items" do
     field(:uuid, Ecto.UUID)
     field(:name, :string)
-    field(:stats, :map)
+    field(:stats, {:array, :map})
     belongs_to(:character, Character)
 
     timestamps()
