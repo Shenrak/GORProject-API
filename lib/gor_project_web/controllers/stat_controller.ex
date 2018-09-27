@@ -21,8 +21,6 @@ defmodule GORprojectWeb.StatController do
         |> put_resp_header("location", item_path(conn, :show))
         |> render("show.json", item: item)
     end
-  rescue
-    _ -> {:error, :bad_params}
   end
 
   def delete(conn, %{"uuid" => uuid, "stat" => stat}) do
@@ -35,7 +33,7 @@ defmodule GORprojectWeb.StatController do
       {:ok, %Item{}} ->
         send_resp(conn, :no_content, "")
     end
-  rescue
-    _ -> {:error, :bad_uuid}
+  # rescue
+  #   _ -> {:error, :bad_uuid}
   end
 end

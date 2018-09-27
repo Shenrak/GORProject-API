@@ -31,17 +31,25 @@ defmodule GORproject.Object do
             {:error, "No object found for the given uuid"}
 
           item ->
-            stats = Map.put(item.stats, newStat["name"], newStat["value"])
+            stats =
+              Enum.into(item.stats, [newStat])
+              |> Enum.uniq_by(fn %{"name" => x, "value" => _} -> x end)
 
             Item.changeset(item, %{stats: stats})
             |> Repo.update()
         end
 
       character ->
-        stats = Map.put(character.stats, newStat["name"], newStat["value"])
+        stats =
+          Enum.into(character.stats, [newStat])
+          |> Enum.uniq_by(fn %{"name" => x, "value" => _} -> x end)
 
-        Character.changeset(character, %{stats: stats})
-        |> Repo.update()
+        with character <-
+               Character.changeset(character, %{stats: stats})
+               |> Repo.update!()
+               |> Repo.preload(:items) do
+          {:ok, character}
+        end
     end
   end
 
@@ -70,16 +78,14 @@ defmodule GORproject.Object do
             {:error, :bad_uuid}
 
           item ->
-            IO.inspect(stat)
-            IO.inspect(item.stats)
-            stats = Map.delete(item.stats, stat)
-            IO.inspect(stats)
+            stats = Enum.filter(item.stats, fn x -> x["name"] != stat end)
+
             Item.changeset(item, %{stats: stats})
             |> Repo.update()
         end
 
       character ->
-        stats = Map.delete(character.stats, stat)
+        stats = Enum.filter(character.stats, fn x -> x["name"] != stat end)
 
         Character.changeset(character, %{stats: stats})
         |> Repo.update()
