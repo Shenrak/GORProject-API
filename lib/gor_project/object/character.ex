@@ -5,7 +5,7 @@ defmodule GORproject.Object.Character do
   alias GORproject.Auth.User
 
   schema "characters" do
-    field(:stats, :map)
+    field(:stats, {:array, :map})
     field(:uuid, Ecto.UUID)
     field(:name, :string)
     has_many(:items, Item)
