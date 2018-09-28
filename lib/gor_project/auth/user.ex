@@ -1,12 +1,15 @@
 defmodule GORproject.Auth.User do
   use Ecto.Schema
   import Ecto.Changeset
+
   alias GORproject.Object.Character
+  alias GORproject.Rooms.Room
 
   schema "users" do
     field(:login, :string)
     field(:password, :string, virtual: true)
     field(:password_hash, :string)
+    many_to_many(:rooms, Room, join_through: "users_rooms")
     has_many(:characters, Character)
 
     timestamps()
