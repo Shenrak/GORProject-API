@@ -18,6 +18,9 @@ defmodule GORprojectWeb.Router do
 
   scope "/api", GORprojectWeb do
     pipe_through([:api, :auth_api])
+    resources("/rooms", RoomController, only: [:create, :index])
+    post("/rooms/join", RoomController, :join)
+
     resources("/users", UserController, except: [:delete, :create, :new, :edit])
 
     resources("/characters", CharacterController, except: [:update, :show, :new, :edit])

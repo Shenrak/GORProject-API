@@ -9,8 +9,8 @@ defmodule GORproject.Auth.User do
     field(:login, :string)
     field(:password, :string, virtual: true)
     field(:password_hash, :string)
-    many_to_many(:rooms, Room, join_through: "users_rooms")
     has_many(:characters, Character)
+    many_to_many(:rooms, Room, join_through: "users_rooms")
 
     timestamps()
   end

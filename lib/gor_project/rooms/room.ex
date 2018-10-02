@@ -9,9 +9,10 @@ defmodule GORproject.Rooms.Room do
     field(:depth, :integer)
     field(:name, :string)
     field(:description, :string)
-    many_to_many(:users, User, join_through: "users_rooms")
-    has_many(:children, Room)
+    field(:public, :boolean)
+    has_many(:children, Room, foreign_key: :father_id)
     belongs_to(:father, Room, foreign_key: :father_id)
+    many_to_many(:users, User, join_through: "users_rooms")
 
     timestamps()
   end
@@ -19,7 +20,8 @@ defmodule GORproject.Rooms.Room do
   @doc false
   def changeset(room, attrs) do
     room
-    |> cast(attrs, [:name, :depth, :description])
-    |> validate_required([:name, :depth])
+    |> cast(attrs, [:name, :depth, :description, :public, :father_id])
+    |> foreign_key_constraint(:father_id)
+    |> validate_required([:name, :depth, :public])
   end
 end

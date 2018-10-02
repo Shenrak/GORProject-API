@@ -7,7 +7,7 @@ defmodule GORproject.Repo.Migrations.CreateRooms do
       add(:depth, :integer)
       add(:description, :string)
 
-      add(:father_id, references: :rooms, null: false)
+      add(:father_id, references(:rooms), null: false)
 
       timestamps()
     end

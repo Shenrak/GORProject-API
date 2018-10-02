@@ -8,6 +8,21 @@ defmodule GORproject.Rooms do
 
   alias GORproject.Rooms.Room
 
+  def join(user_id, room_id) do
+    room =
+      from(r in Room, where: r.id == ^room_id, select: r)
+      |> Repo.all()
+      |> hd()
+
+    if(room.public) do
+      {:ok, "You have been allowed"}
+    else
+      {:unauthorized, "The game master didn't allow you"}
+    end
+  rescue
+    _ -> {:error, :bad_params}
+  end
+
   @doc """
   Returns the list of rooms.
 
@@ -19,6 +34,9 @@ defmodule GORproject.Rooms do
   """
   def list_rooms do
     Repo.all(Room)
+    |> Repo.preload(:users)
+    # |> Repo.preload(:children)
+    # |> Repo.preload(:father)
   end
 
   @doc """
@@ -50,7 +68,7 @@ defmodule GORproject.Rooms do
 
   """
   def create_room(attrs \\ %{}) do
-    %Room{}
+    %Room{children: [], father: nil, users: []}
     |> Room.changeset(attrs)
     |> Repo.insert()
   end
