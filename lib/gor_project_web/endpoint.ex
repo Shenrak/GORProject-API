@@ -43,9 +43,10 @@ defmodule GORprojectWeb.Endpoint do
 
   plug(
     Corsica,
-    origins: "http://localhost:3000",
+    origins: "*",
+    # origins: "http://localhost:3000",
     log: [rejected: :error, invalid: :warn, accepted: :debug],
-    allow_headers: ["content-type"],
+    allow_headers: ["content-type", "authorization"],
     allow_credentials: true
   )
 
