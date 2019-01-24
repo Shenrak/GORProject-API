@@ -25,15 +25,15 @@ defmodule GORproject.Rooms do
 
   def getCurrent(user_id) do
     room =
-      from(r in Room, where: r.id == ^room_id, select: r)
+      from(ur in UserRoom,
+        join: r in assoc(ur, :room),
+        where: ur.user_id == ^user_id and ur.connected == true,
+        select: r
+      )
       |> Repo.all()
       |> hd()
 
-    if(room.public) do
-      {:ok, "You have been allowed"}
-    else
-      {:unauthorized, "The game master didn't allow you"}
-    end
+    {:ok, room}
   rescue
     _ -> {:error, :bad_params}
   end
@@ -50,6 +50,7 @@ defmodule GORproject.Rooms do
   def list_rooms do
     Repo.all(Room)
     |> Repo.preload(:users)
+
     # |> Repo.preload(:children)
     # |> Repo.preload(:father)
   end

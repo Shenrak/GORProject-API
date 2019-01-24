@@ -47,6 +47,7 @@ defmodule GORprojectWeb.Endpoint do
     # origins: "http://localhost:3000",
     log: [rejected: :error, invalid: :warn, accepted: :debug],
     allow_headers: ["content-type", "authorization"],
+    allow_methods: ["POST", "GET", "OPTION", "DELETE"],
     allow_credentials: true
   )
 
