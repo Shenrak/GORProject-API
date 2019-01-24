@@ -23,6 +23,21 @@ defmodule GORproject.Rooms do
     _ -> {:error, :bad_params}
   end
 
+  def getCurrent(user_id) do
+    room =
+      from(r in Room, where: r.id == ^room_id, select: r)
+      |> Repo.all()
+      |> hd()
+
+    if(room.public) do
+      {:ok, "You have been allowed"}
+    else
+      {:unauthorized, "The game master didn't allow you"}
+    end
+  rescue
+    _ -> {:error, :bad_params}
+  end
+
   @doc """
   Returns the list of rooms.
 
