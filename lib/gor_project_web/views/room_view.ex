@@ -28,4 +28,10 @@ defmodule GORprojectWeb.RoomView do
       message: message
     }
   end
+
+  def render("current.json", %{room: room})do
+    %{
+      room: room
+    }
+  end
 end

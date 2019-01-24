@@ -19,6 +19,18 @@ defmodule GORprojectWeb.RoomController do
     end
   end
 
+  def getCurrent(conn, _params) do
+    case Rooms.getCurrent(conn.assigns.user) do
+      {:ok, room} ->
+        conn
+        |> put_status(:ok)
+        |> render("current.json", room: room)
+
+      {status, message} ->
+        {status, message}
+    end
+  end
+
   def index(conn, _params) do
     rooms = Rooms.list_rooms()
     render(conn, "index.json", rooms: rooms)

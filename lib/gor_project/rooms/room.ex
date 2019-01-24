@@ -12,7 +12,7 @@ defmodule GORproject.Rooms.Room do
     field(:public, :boolean)
     has_many(:children, Room, foreign_key: :father_id)
     belongs_to(:father, Room, foreign_key: :father_id)
-    many_to_many(:users, User, join_through: "users_rooms")
+    many_to_many(:users, User, join_through: "user_room")
 
     timestamps()
   end

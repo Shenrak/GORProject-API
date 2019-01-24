@@ -23,6 +23,21 @@ defmodule GORproject.Rooms do
     _ -> {:error, :bad_params}
   end
 
+  def getCurrent(user_id) do
+    room =
+      from(ur in UserRoom,
+        join: r in assoc(ur, :room),
+        where: ur.user_id == ^user_id and ur.connected == true,
+        select: r
+      )
+      |> Repo.all()
+      |> hd()
+
+    {:ok, room}
+  rescue
+    _ -> {:error, :bad_params}
+  end
+
   @doc """
   Returns the list of rooms.
 
@@ -35,6 +50,7 @@ defmodule GORproject.Rooms do
   def list_rooms do
     Repo.all(Room)
     |> Repo.preload(:users)
+
     # |> Repo.preload(:children)
     # |> Repo.preload(:father)
   end
