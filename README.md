@@ -54,7 +54,8 @@ You can now have fun with the API located at [`localhost:4000`](http://localhost
 
 ## What about a frontend?
 
-A frontend will certainly be written using [`react`](https://reactjs.org), but if you want to build one, feel free to do so! Be careful though, because we cannot give any guarantee on the stability of the API. Feel free to reach us on the issues to discuss on anything!
+A frontend is currently written using [`react`](https://reactjs.org), but if you want to build one, feel free to do so! Be careful though, because we cannot give any guarantee on the stability of the API. Feel free to reach us on the issues to discuss on anything!
+The [frontend](https://github.com/Shenrak/GORProject).
 
 [`erlang`]: https://www.erlang.org/
 [`elixir`]: https://elixir-lang.org/
