@@ -12,7 +12,7 @@ defmodule GORproject.Repo.Migrations.AddUserRoomTable do
       add(:is_creator, :boolean)
       add(:current_role, :string, size: 20)
 
-      timestamps
+      timestamps()
     end
   end
 end
