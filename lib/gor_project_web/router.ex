@@ -16,6 +16,11 @@ defmodule GORprojectWeb.Router do
     post("/users/sign_in", UserController, :sign_in)
   end
 
+  scope "/api" do
+    forward("/graphql", Absinthe.Plug, schema: GORproject.Web.Schema)
+    forward("/graphiql", Absinthe.Plug.GraphiQL, schema: GORproject.Web.Schema)
+  end
+
   scope "/api", GORprojectWeb do
     pipe_through([:api, :auth_api])
     resources("/rooms", RoomController, only: [:create, :index])

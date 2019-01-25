@@ -21,6 +21,7 @@ defmodule GORproject.Auth.User do
     |> cast(attrs, [:login, :password])
     |> validate_required([:login, :password])
     |> unique_constraint(:login)
+    # |> unique_constraint(:email, downcase: true)
     |> put_password_hash()
   end
 
@@ -30,7 +31,8 @@ defmodule GORproject.Auth.User do
            changes: %{password: password}
          } = changeset
        ) do
-    change(changeset, password_hash: Bcrypt.hash_pwd_salt(password))
+    # change(changeset, password_hash: Bcrypt.hash_pwd_salt(password))
+    change(changeset, password_hash: password)
   end
 
   defp put_password_hash(changeset) do

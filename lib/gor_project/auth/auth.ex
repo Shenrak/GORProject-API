@@ -58,8 +58,6 @@ defmodule GORproject.Auth do
     resp =
       Repo.all(from(u in User, where: u.id == ^id, preload: [{:characters, :items}]))
       |> hd()
-
-    {:ok, resp}
   end
 
   @doc """
