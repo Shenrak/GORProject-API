@@ -5,12 +5,16 @@ defmodule GORproject.Web.Schema.Types do
 
   object :user do
     field(:id, :id)
-    field(:login, :string)
+    field(:username, :string)
     field(:email, :string)
     field(:password, :string)
     field(:characters, list_of(:character), resolve: assoc(:character))
     # many_to_many(:rooms, Room, join_through: "user_room")
     # field(:posts, list_of(:blog_post), resolve: assoc(:blog_posts))
+  end
+
+  object :session do
+    field(:token, :string)
   end
 
   object :character do
@@ -23,14 +27,13 @@ defmodule GORproject.Web.Schema.Types do
   end
 
   scalar :json, description: "JSON field type in postgres" do
-    parse fn input ->
+    parse(fn input ->
       case Poison.decode(input.value) do
         {:ok, result} -> {:ok, result}
         _ -> :error
       end
-    end
+    end)
 
-    serialize &Poison.encode!/1
+    serialize(&Poison.encode!/1)
   end
-
 end
