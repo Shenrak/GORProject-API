@@ -1,4 +1,4 @@
-defmodule GORproject.Object do
+defmodule GORproject.Object.ObjectCRUD do
   @moduledoc """
   The Object context.
   """
@@ -101,9 +101,13 @@ defmodule GORproject.Object do
       [%Character{}, ...]
 
   """
-  def list_characters(id) do
+  def list_characters(params) do
     # Repo.all(Character)
-    Repo.all(from(c in Character, where: c.user_id == ^id, preload: :items))
+    Repo.all(from(c in Character, where: c.user_id == ^params.user_id, preload: :items))
+  end
+
+  def list_all_characters() do
+    Repo.all(from(c in Character, preload: :items))
   end
 
   @doc """

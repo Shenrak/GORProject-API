@@ -1,4 +1,4 @@
-defmodule GORproject.Guardian do
+defmodule GORprojectWeb.Guardian do
   use Guardian, otp_app: :gor_project
   alias GORproject.Auth
 

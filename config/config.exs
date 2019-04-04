@@ -36,7 +36,7 @@ config :gor_project, GORproject.Guardian,
   verify_issuer: true,
   # generated using: JOSE.JWK.generate_key({:oct, 16}) |> JOSE.JWK.to_map |> elem(1)
   secret_key: %{"k" => "7oyJlA0ybXCO9o23VbMDjQ", "kty" => "oct"},
-  serializer: GORproject.Guardian
+  serializer: GORprojectWeb.Guardian
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

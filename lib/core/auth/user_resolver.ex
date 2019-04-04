@@ -1,6 +1,6 @@
 defmodule GORproject.Auth.UserResolver do
   alias GORproject.Auth.UserCRUD
-  alias GORproject.AuthHelper
+  alias GORprojectWeb.AuthHelper
 
   def all(_args, _info) do
     {:ok, UserCRUD.list_users()}

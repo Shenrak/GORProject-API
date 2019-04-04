@@ -1,4 +1,4 @@
-defmodule GORproject.AuthHelper do
+defmodule GORprojectWeb.AuthHelper do
   @moduledoc false
 
   # import Comeonin.Bcrypt, only: [checkpw: 2]

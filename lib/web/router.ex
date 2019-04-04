@@ -17,8 +17,8 @@ defmodule GORprojectWeb.Router do
   end
 
   scope "/api" do
-    forward("/graphql", Absinthe.Plug, schema: GORproject.Web.Schema)
-    forward("/graphiql", Absinthe.Plug.GraphiQL, schema: GORproject.Web.Schema)
+    forward("/graphql", Absinthe.Plug, schema: GORprojectWeb.Schema)
+    forward("/graphiql", Absinthe.Plug.GraphiQL, schema: GORprojectWeb.Schema)
   end
 
   scope "/api", GORprojectWeb do

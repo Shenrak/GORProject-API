@@ -1,4 +1,4 @@
-defmodule GORproject.Web.Schema.Types do
+defmodule GORprojectWeb.Schema.Types do
   use Absinthe.Schema.Notation
   use Absinthe.Ecto, repo: GORproject.Repo
   import Poison
@@ -23,10 +23,18 @@ defmodule GORproject.Web.Schema.Types do
     field(:uuid, :string)
     field(:name, :string)
     field(:user, :user, resolve: assoc(:user))
-    # has_many(:items, Item)
+    field(:items, list_of(:item), resolve: assoc(:item))
   end
 
-  scalar :json, description: "JSON field type in postgres" do
+  object :item do
+    field(:id, :id)
+    field(:stats, list_of(:json))
+    field(:uuid, :string)
+    field(:name, :string)
+    field(:character, :character, resolve: assoc(:character))
+  end
+
+  scalar :json do
     parse(fn input ->
       case Poison.decode(input.value) do
         {:ok, result} -> {:ok, result}
